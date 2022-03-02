@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
+using OfficeManagementAPI.Models;
 
 namespace OfficeManagementAPI.Controllers
 {
@@ -25,8 +26,8 @@ namespace OfficeManagementAPI.Controllers
         public JsonResult Get()
         {
             string query = @"
-                            select ID,Fname,LName,Email,Password,Role,Gender,BirthDate,Nationality,
-                            Status,DeskNr,OfficeName,FloorNr,BuildingName from dbo.Employees
+                            select ID,FName,LName,Email,Passw,EmpRole,Gender,BirthDate,Nationality,
+                            EmpStatus,DeskNr,OfficeName,FloorNr,BuildingName from dbo.Employees
                             ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
@@ -36,6 +37,44 @@ namespace OfficeManagementAPI.Controllers
                 myCon.Open();
                 using(SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(table);
+        }
+        [HttpPost]
+        public JsonResult Post(Employees emp)
+        {
+            string query = @"
+                            import into dbo.Employees values(
+                            @FName,@LName,@Email,@Passw,@EmpRole,@Gender,@BirthDate,@Nationality,
+                            @EmpStatus,@DeskNr,@OfficeName,@FloorNr,@BuildingName
+                            )
+                            ";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@FName",emp.FName);
+                    myCommand.Parameters.AddWithValue("@LName", emp.LName);
+                    myCommand.Parameters.AddWithValue("@Email", emp.Email);
+                    myCommand.Parameters.AddWithValue("@Passw", emp.Passw);
+                    myCommand.Parameters.AddWithValue("@EmpRole", emp.EmpRole);
+                    myCommand.Parameters.AddWithValue("@Gender", emp.Gender);
+                    myCommand.Parameters.AddWithValue("@BirthDate", emp.BirthDate);
+                    myCommand.Parameters.AddWithValue("@Nationality", emp.Nationality);
+                    myCommand.Parameters.AddWithValue("@EmpStatus", emp.EmpStatus);
+                    myCommand.Parameters.AddWithValue("@DeskNr", emp.DeskNr);
+                    myCommand.Parameters.AddWithValue("@OfficeName", emp.OfficeName);
+                    myCommand.Parameters.AddWithValue("@FloorNr", emp.FloorNr);
+                    myCommand.Parameters.AddWithValue("@BuildingName", emp.BuildingName);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();

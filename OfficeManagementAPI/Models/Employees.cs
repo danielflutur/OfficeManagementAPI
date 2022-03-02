@@ -11,12 +11,12 @@ namespace OfficeManagementAPI.Models
         public string FName { get; set; }
         public string LName { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
-        public string Role { get; set; }
+        public string Passw { get; set; }
+        public string EmpRole { get; set; }
         public string Gender { get; set; }
         public DateTime BirthDate { get; set; }
         public string Nationality { get; set; }
-        public string Status { get; set; }
+        public string EmpStatus { get; set; }
         public int DeskNr { get; set; }
         public string OfficeName { get; set; }
         public int FloorNr { get; set; }
