@@ -49,7 +49,7 @@ namespace OfficeManagementAPI.Controllers
         public JsonResult Post(Employees emp)
         {
             string query = @"
-                            import into dbo.Employees values(
+                            insert into dbo.Employees values(
                             @FName,@LName,@Email,@Passw,@EmpRole,@Gender,@BirthDate,@Nationality,
                             @EmpStatus,@DeskNr,@OfficeName,@FloorNr,@BuildingName
                             )
@@ -81,7 +81,74 @@ namespace OfficeManagementAPI.Controllers
                     myCon.Close();
                 }
             }
-            return new JsonResult(table);
+            return new JsonResult("Added succesfuly");
+        }
+        [HttpPut]
+        public JsonResult Put(Employees emp)
+        {
+            string query = @"
+                            update dbo.Employees 
+                            set FName = @FName, LName = @LName,
+                            Email = @Email, Passw = @Passw,
+                            EmpRole = @EmpRole, Gender = @Gender,
+                            BirthDate = @BirthDate, Nationality = @Nationality,
+                            EmpStatus = @EmpStatus, DeskNr = @DeskNr,
+                            OfficeName = @OfficeName, FloorNr = @FloorNr,
+                            BuildingName = @BuildingName where ID = @ID
+                            
+                            ";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@ID", emp.ID);
+                    myCommand.Parameters.AddWithValue("@FName", emp.FName);
+                    myCommand.Parameters.AddWithValue("@LName", emp.LName);
+                    myCommand.Parameters.AddWithValue("@Email", emp.Email);
+                    myCommand.Parameters.AddWithValue("@Passw", emp.Passw);
+                    myCommand.Parameters.AddWithValue("@EmpRole", emp.EmpRole);
+                    myCommand.Parameters.AddWithValue("@Gender", emp.Gender);
+                    myCommand.Parameters.AddWithValue("@BirthDate", emp.BirthDate);
+                    myCommand.Parameters.AddWithValue("@Nationality", emp.Nationality);
+                    myCommand.Parameters.AddWithValue("@EmpStatus", emp.EmpStatus);
+                    myCommand.Parameters.AddWithValue("@DeskNr", emp.DeskNr);
+                    myCommand.Parameters.AddWithValue("@OfficeName", emp.OfficeName);
+                    myCommand.Parameters.AddWithValue("@FloorNr", emp.FloorNr);
+                    myCommand.Parameters.AddWithValue("@BuildingName", emp.BuildingName);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Updated succesfuly");
+        }
+        [HttpDelete ("{id}")]
+        public JsonResult Delete(int id)
+        {
+            string query = @"
+                            delete from dbo.Employees where ID = @ID
+                            ";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@ID", id);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Deleted succesfuly");
         }
     }
 }
