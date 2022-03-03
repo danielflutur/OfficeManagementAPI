@@ -7,6 +7,7 @@ namespace OfficeManagementAPI.Models
 {
     public class Office
     {
+        public int OfficeID { get; set; }
         public string OfficeName { get; set; }
         public string BuildingName { get; set; }
         public int FloorNr { get; set; }

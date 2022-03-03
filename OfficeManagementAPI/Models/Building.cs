@@ -8,7 +8,7 @@ namespace OfficeManagementAPI.Models
     public class Building
     {
         public string BuildingName { get; set; }
-        public int NrOfFloors { get; set; }
-        public string Address { get; set; }
+        public int NumberOfFloors { get; set; }
+        public string BuildingAddress { get; set; }
     }
 }
