@@ -9,7 +9,7 @@ namespace OfficeManagementAPI.Models
     {
         public int DeskID { get; set; }
         public int DeskNr { get; set; }
-        public String DeskStatus { get; set; }
+        public string DeskStatus { get; set; }
         public string OfficeName { get; set; }
         public int EmployeeID { get; set; }
     }
