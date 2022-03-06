@@ -21,5 +21,6 @@ namespace OfficeManagementAPI.Models
         public string OfficeName { get; set; }
         public int FloorNr { get; set; }
         public string BuildingName { get; set; }
+        public bool WorkRemote { get; set; }
     }
 }

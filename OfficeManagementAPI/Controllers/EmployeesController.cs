@@ -27,7 +27,7 @@ namespace OfficeManagementAPI.Controllers
         {
             string query = @"
                             select ID,FName,LName,Email,Passw,EmpRole,Gender,BirthDate,Nationality,
-                            EmpStatus,DeskNr,OfficeName,FloorNr,BuildingName from dbo.Employees
+                            EmpStatus,DeskNr,OfficeName,FloorNr,BuildingName,WorkRemote from dbo.Employees
                             ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
@@ -51,7 +51,7 @@ namespace OfficeManagementAPI.Controllers
             string query = @"
                             insert into dbo.Employees values(
                             @FName,@LName,@Email,@Passw,@EmpRole,@Gender,@BirthDate,@Nationality,
-                            @EmpStatus,@DeskNr,@OfficeName,@FloorNr,@BuildingName
+                            @EmpStatus,@DeskNr,@OfficeName,@FloorNr,@BuildingName,@WorkRemote
                             )
                             ";
             DataTable table = new DataTable();
@@ -75,6 +75,7 @@ namespace OfficeManagementAPI.Controllers
                     myCommand.Parameters.AddWithValue("@OfficeName", emp.OfficeName);
                     myCommand.Parameters.AddWithValue("@FloorNr", emp.FloorNr);
                     myCommand.Parameters.AddWithValue("@BuildingName", emp.BuildingName);
+                    myCommand.Parameters.AddWithValue("@WorkRemote", emp.WorkRemote);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -94,7 +95,7 @@ namespace OfficeManagementAPI.Controllers
                             BirthDate = @BirthDate, Nationality = @Nationality,
                             EmpStatus = @EmpStatus, DeskNr = @DeskNr,
                             OfficeName = @OfficeName, FloorNr = @FloorNr,
-                            BuildingName = @BuildingName where ID = @ID
+                            BuildingName = @BuildingName, WorkRemote = @WorkRemote where ID = @ID
                             
                             ";
             DataTable table = new DataTable();
@@ -119,6 +120,7 @@ namespace OfficeManagementAPI.Controllers
                     myCommand.Parameters.AddWithValue("@OfficeName", emp.OfficeName);
                     myCommand.Parameters.AddWithValue("@FloorNr", emp.FloorNr);
                     myCommand.Parameters.AddWithValue("@BuildingName", emp.BuildingName);
+                    myCommand.Parameters.AddWithValue("@WorkRemote", emp.WorkRemote);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
