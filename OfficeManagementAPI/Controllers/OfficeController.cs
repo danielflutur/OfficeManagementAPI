@@ -27,7 +27,7 @@ namespace OfficeManagementAPI.Controllers
         {
             string query = @"
                         select OfficeID, OfficeName, BuildingName, FloorNr,
-                        NrOfDesks, NrOfFreeDesks, OfficeAdminName
+                        DesksCount, FreeDesksCount, OfficeAdminName, OccupiedDesksCount
                         from dbo.Office
                         ";
             DataTable table = new DataTable();
@@ -51,8 +51,8 @@ namespace OfficeManagementAPI.Controllers
         {
             string query = @"
                         insert into dbo.Office values(
-                        @OfficeName, @BuildingName, @FloorNr, @NrOfDesks,
-                        @NrOfFreeDesks, @OfficeAdminName
+                        @OfficeName, @BuildingName, @FloorNr, @DesksCount,
+                        @FreeDesksCount, @OfficeAdminName,@OccupiedDesksCount
                         )
                         ";
             DataTable table = new DataTable();
@@ -66,9 +66,10 @@ namespace OfficeManagementAPI.Controllers
                     myCommand.Parameters.AddWithValue("@OfficeName", office.OfficeName);
                     myCommand.Parameters.AddWithValue("@BuildingName", office.BuildingName);
                     myCommand.Parameters.AddWithValue("@FloorNr", office.FloorNr);
-                    myCommand.Parameters.AddWithValue("@NrOfDesks", office.NrOfDesks);
-                    myCommand.Parameters.AddWithValue("@NrOfFreeDesks", office.NrOfFreeDesks);
+                    myCommand.Parameters.AddWithValue("@DesksCount", office.DesksCount);
+                    myCommand.Parameters.AddWithValue("@FreeDesksCount", office.FreeDesksCount);
                     myCommand.Parameters.AddWithValue("@OfficeAdminName", office.OfficeAdminName);
+                    myCommand.Parameters.AddWithValue("@OccupiedDesksCount", office.OccupiedDeskCount);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -86,9 +87,10 @@ namespace OfficeManagementAPI.Controllers
                         OfficeName = @OfficeName,
                         BuildingName = @BuildingName,
                         FloorNr = @FloorNr,
-                        NrOfDesks = @NrOfDesks,
-                        NrOfFreeDesks = @NrOfFreeDesks,
-                        OfficeAdminName = @OfficeAdminName
+                        DesksCount = @DesksCount,
+                        FreeDesksCount = @FreeDesksCount,
+                        OfficeAdminName = @OfficeAdminName,
+                        OccupiedDesksCount = @OccupiedDesksCount
                         where OfficeID = @OfficeID
                         ";
             DataTable table = new DataTable();
@@ -103,9 +105,10 @@ namespace OfficeManagementAPI.Controllers
                     myCommand.Parameters.AddWithValue("@OfficeName", office.OfficeName);
                     myCommand.Parameters.AddWithValue("@BuildingName", office.BuildingName);
                     myCommand.Parameters.AddWithValue("@FloorNr", office.FloorNr);
-                    myCommand.Parameters.AddWithValue("@NrOfDesks", office.NrOfDesks);
-                    myCommand.Parameters.AddWithValue("@NrOfFreeDesks", office.NrOfFreeDesks);
+                    myCommand.Parameters.AddWithValue("@DesksCount", office.DesksCount);
+                    myCommand.Parameters.AddWithValue("@FreeDesksCount", office.FreeDesksCount);
                     myCommand.Parameters.AddWithValue("@OfficeAdminName", office.OfficeAdminName);
+                    myCommand.Parameters.AddWithValue("@OccupiedDesksCount", office.OccupiedDeskCount);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
