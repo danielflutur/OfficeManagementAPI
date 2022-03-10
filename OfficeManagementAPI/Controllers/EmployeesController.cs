@@ -95,7 +95,7 @@ namespace OfficeManagementAPI.Controllers
                             BirthDate = @BirthDate, Nationality = @Nationality,
                             EmpStatus = @EmpStatus, DeskNr = @DeskNr,
                             OfficeName = @OfficeName, FloorNr = @FloorNr,
-                            BuildingName = @BuildingName, WorkRemote = @WorkRemote where ID = @ID
+                            BuildingName = @BuildingName, WorkRemote = @WorkRemote where FName = @FName
                             
                             ";
             DataTable table = new DataTable();
@@ -127,13 +127,13 @@ namespace OfficeManagementAPI.Controllers
                     myCon.Close();
                 }
             }
-            return new JsonResult("Updated succesfuly");
+            return new JsonResult("Updated successfuly");
         }
-        [HttpDelete ("{id}")]
-        public JsonResult Delete(int id)
+        [HttpDelete ("{FName}")]
+        public JsonResult Delete(string FName)
         {
             string query = @"
-                            delete from dbo.Employees where ID = @ID
+                            delete from dbo.Employees where FName = @FName
                             ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
@@ -143,14 +143,14 @@ namespace OfficeManagementAPI.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@ID", id);
+                    myCommand.Parameters.AddWithValue("@FName", FName);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
                     myCon.Close();
                 }
             }
-            return new JsonResult("Deleted succesfuly");
+            return new JsonResult("Deleted successfuly");
         }
     }
 }
