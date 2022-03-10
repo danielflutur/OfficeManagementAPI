@@ -130,10 +130,10 @@ namespace OfficeManagementAPI.Controllers
             return new JsonResult("Updated succesfuly");
         }
         [HttpDelete ("{id}")]
-        public JsonResult Delete(int id)
+        public JsonResult Delete(string id)
         {
             string query = @"
-                            delete from dbo.Employees where ID = @ID
+                            delete from dbo.Employees where FName = @FName
                             ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
@@ -143,7 +143,7 @@ namespace OfficeManagementAPI.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@ID", id);
+                    myCommand.Parameters.AddWithValue("@FName", id);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();

@@ -11,8 +11,9 @@ namespace OfficeManagementAPI.Models
         public string OfficeName { get; set; }
         public string BuildingName { get; set; }
         public int FloorNr { get; set; }
-        public int NrOfDesks { get; set; }
-        public int NrOfFreeDesks { get; set; }
+        public int DesksCount { get; set; }
+        public int FreeDesksCount { get; set; }
         public string OfficeAdminName { get; set; }
+        public string OccupiedDeskCount { get; set; }
     }
 }
