@@ -13,11 +13,11 @@ namespace OfficeManagementAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OfficeController : ControllerBase
+    public class OfficesController : ControllerBase
     {
         private readonly IConfiguration _configuration;
 
-        public OfficeController(IConfiguration configuration)
+        public OfficesController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -26,9 +26,9 @@ namespace OfficeManagementAPI.Controllers
         public JsonResult Get()
         {
             string query = @"
-                        select OfficeID, OfficeName, BuildingName, FloorNr,
-                        DesksCount, FreeDesksCount, OfficeAdminName, OccupiedDesksCount
-                        from dbo.Office
+                        select OfficeID, OfficeName, BuildingName, FloorNo,
+                        OfficeAdminName, TotalDesksCount, UsableDesksCount, OccupiedDesksCount
+                        from dbo.Offices
                         ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
@@ -47,12 +47,12 @@ namespace OfficeManagementAPI.Controllers
             return new JsonResult(table);
         }
         [HttpPost]
-        public JsonResult Post(Office office)
+        public JsonResult Post(Offices office)
         {
             string query = @"
-                        insert into dbo.Office values(
-                        @OfficeName, @BuildingName, @FloorNr, @DesksCount,
-                        @FreeDesksCount, @OfficeAdminName,@OccupiedDesksCount
+                        insert into dbo.Offices values(
+                        @OfficeName, @BuildingName, @FloorNo, @OfficeAdminName, @TotalDesksCount,
+                        @UsableDesksCount, @OccupiedDesksCount
                         )
                         ";
             DataTable table = new DataTable();
@@ -65,10 +65,10 @@ namespace OfficeManagementAPI.Controllers
                 {
                     myCommand.Parameters.AddWithValue("@OfficeName", office.OfficeName);
                     myCommand.Parameters.AddWithValue("@BuildingName", office.BuildingName);
-                    myCommand.Parameters.AddWithValue("@FloorNr", office.FloorNr);
-                    myCommand.Parameters.AddWithValue("@DesksCount", office.DesksCount);
-                    myCommand.Parameters.AddWithValue("@FreeDesksCount", office.FreeDesksCount);
+                    myCommand.Parameters.AddWithValue("@FloorNo", office.FloorNo);
                     myCommand.Parameters.AddWithValue("@OfficeAdminName", office.OfficeAdminName);
+                    myCommand.Parameters.AddWithValue("@TotalDesksCount", office.TotalDesksCount);
+                    myCommand.Parameters.AddWithValue("@UsableDesksCount", office.UsableDesksCount);
                     myCommand.Parameters.AddWithValue("@OccupiedDesksCount", office.OccupiedDeskCount);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
@@ -79,17 +79,17 @@ namespace OfficeManagementAPI.Controllers
             return new JsonResult("Added succesfuly");
         }
         [HttpPut]
-        public JsonResult Put(Office office)
+        public JsonResult Put(Offices office)
         {
             string query = @"
-                        update dbo.Office
+                        update dbo.Offices
                         set
                         OfficeName = @OfficeName,
                         BuildingName = @BuildingName,
-                        FloorNr = @FloorNr,
-                        DesksCount = @DesksCount,
-                        FreeDesksCount = @FreeDesksCount,
+                        FloorNo = @FloorNo,
                         OfficeAdminName = @OfficeAdminName,
+                        TotalDesksCount = @TotalDesksCount,
+                        UsableDesksCount = @UsableDesksCount,
                         OccupiedDesksCount = @OccupiedDesksCount
                         where OfficeID = @OfficeID
                         ";
@@ -101,13 +101,13 @@ namespace OfficeManagementAPI.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@OfficeID", office.OfficeID);
+                    //myCommand.Parameters.AddWithValue("@OfficeID", office.OfficeID);
                     myCommand.Parameters.AddWithValue("@OfficeName", office.OfficeName);
                     myCommand.Parameters.AddWithValue("@BuildingName", office.BuildingName);
-                    myCommand.Parameters.AddWithValue("@FloorNr", office.FloorNr);
-                    myCommand.Parameters.AddWithValue("@DesksCount", office.DesksCount);
-                    myCommand.Parameters.AddWithValue("@FreeDesksCount", office.FreeDesksCount);
+                    myCommand.Parameters.AddWithValue("@FloorNo", office.FloorNo);
                     myCommand.Parameters.AddWithValue("@OfficeAdminName", office.OfficeAdminName);
+                    myCommand.Parameters.AddWithValue("@TotalDesksCount", office.TotalDesksCount);
+                    myCommand.Parameters.AddWithValue("@UsableDesksCount", office.UsableDesksCount);
                     myCommand.Parameters.AddWithValue("@OccupiedDesksCount", office.OccupiedDeskCount);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
@@ -121,7 +121,7 @@ namespace OfficeManagementAPI.Controllers
         public JsonResult Delete(int id)
         {
             string query = @"
-                        delete from dbo.Office where OfficeID = @OfficeID
+                        delete from dbo.Offices where OfficeID = @OfficeID
                         ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");

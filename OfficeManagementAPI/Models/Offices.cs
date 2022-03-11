@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 
 namespace OfficeManagementAPI.Models
 {
-    public class Office
+    public class Offices
     {
         public int OfficeID { get; set; }
         public string OfficeName { get; set; }
         public string BuildingName { get; set; }
-        public int FloorNr { get; set; }
-        public int DesksCount { get; set; }
-        public int FreeDesksCount { get; set; }
+        public int FloorNo { get; set; }
         public string OfficeAdminName { get; set; }
+        public int TotalDesksCount { get; set; }
+        public int UsableDesksCount { get; set; }
         public string OccupiedDeskCount { get; set; }
     }
 }
