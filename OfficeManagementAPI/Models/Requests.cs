@@ -6,5 +6,6 @@
         public string EmployeeName { get; set; }
         public int RemotePercent { get; set; }
         public string RequestMsg { get; set; }
+        public string ReqStatus { get; set; }
     }
 }

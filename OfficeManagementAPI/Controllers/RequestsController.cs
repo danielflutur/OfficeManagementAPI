@@ -22,7 +22,7 @@ namespace OfficeManagementAPI.Controllers
         public JsonResult Get()
         {
             string query = @"
-                            select RequestNo, EmployeeName, RemotePercent, RequestMsg from dbo.Requests
+                            select RequestNo, EmployeeName, RemotePercent, RequestMsg, ReqStatus from dbo.Requests
                             ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
@@ -45,7 +45,7 @@ namespace OfficeManagementAPI.Controllers
         {
             string query = @"
                             insert into dbo.Requests values(
-                            @EmployeeName, @RemotePercent, @RequestMsg
+                            @EmployeeName, @RemotePercent, @RequestMsg, @ReqStatus
                             )
                             ";
             DataTable table = new DataTable();
@@ -59,6 +59,7 @@ namespace OfficeManagementAPI.Controllers
                     myCommand.Parameters.AddWithValue("@EmployeeName", req.EmployeeName);
                     myCommand.Parameters.AddWithValue("@RemotePercent", req.RemotePercent);
                     myCommand.Parameters.AddWithValue("@RequestMsg", req.RequestMsg);
+                    myCommand.Parameters.AddWithValue("@ReqStatus", req.ReqStatus);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -75,7 +76,8 @@ namespace OfficeManagementAPI.Controllers
                             set
                             EmployeeName = @EmployeeName,
                             RemotePercent = @RemotePercent,
-                            RequestMsg = @RequestMsg
+                            RequestMsg = @RequestMsg,
+                            ReqStatus = @ReqStatus
                             where RequestNo = @RequestNo
                             ";
             DataTable table = new DataTable();
@@ -89,6 +91,7 @@ namespace OfficeManagementAPI.Controllers
                     myCommand.Parameters.AddWithValue("@EmployeeName", req.EmployeeName);
                     myCommand.Parameters.AddWithValue("@RemotePercent", req.RemotePercent);
                     myCommand.Parameters.AddWithValue("@RequestMsg", req.RequestMsg);
+                    myCommand.Parameters.AddWithValue("@ReqStatus", req.ReqStatus);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
