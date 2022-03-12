@@ -8,8 +8,8 @@ namespace OfficeManagementAPI.Models
     public class Employees
     {
         public int ID { get; set; }
-        public string FName { get; set; }
-        public string LName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string Email { get; set; }
         public string Passw { get; set; }
         public string EmpRole { get; set; }
@@ -17,10 +17,10 @@ namespace OfficeManagementAPI.Models
         public DateTime BirthDate { get; set; }
         public string Nationality { get; set; }
         public string EmpStatus { get; set; }
-        public int DeskNr { get; set; }
+        public int DeskNo { get; set; }
         public string OfficeName { get; set; }
-        public int FloorNr { get; set; }
+        public int FloorNo { get; set; }
         public string BuildingName { get; set; }
-        public bool WorkRemote { get; set; }
+        public string WorkRemote { get; set; }
     }
 }
