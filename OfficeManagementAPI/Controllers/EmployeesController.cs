@@ -152,5 +152,39 @@ namespace OfficeManagementAPI.Controllers
             }
             return new JsonResult("Deleted successfuly");
         }
+
+        [HttpPut ("{status}")]
+        public JsonResult PutStatus(string status, Employees emp)
+        {
+            string query = @"
+                            update dbo.Employees 
+                            set EmpStatus = @EmpStatus where ID = @ID
+                            
+                            ";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@ID", emp.ID);
+                    if (status == "inactive")
+                        myCommand.Parameters.AddWithValue("@EmpStatus", "inactive");
+                    else if (status == "active")
+                        myCommand.Parameters.AddWithValue("@EmpStatus", "active");
+                    else
+                        myCommand.Parameters.AddWithValue("@EmpStatus", "error");
+
+
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Updated successfuly");
+        }
     }
 }
