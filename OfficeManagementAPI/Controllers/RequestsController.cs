@@ -97,7 +97,7 @@ namespace OfficeManagementAPI.Controllers
             }
             return new JsonResult("Updated succesfuly");
         }
-        [HttpDelete("{name}")]
+        [HttpDelete("{id}")]
         public JsonResult Delete(int id)
         {
             string query = @"
