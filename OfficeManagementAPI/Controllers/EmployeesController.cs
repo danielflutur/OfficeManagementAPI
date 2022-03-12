@@ -84,8 +84,8 @@ namespace OfficeManagementAPI.Controllers
             }
             return new JsonResult("Added succesfuly");
         }
-        [HttpPut ("{id}")]
-        public JsonResult Put(Employees emp, int id)
+        [HttpPut]
+        public JsonResult Put(Employees emp)
         {
             string query = @"
                             update dbo.Employees 
@@ -106,7 +106,7 @@ namespace OfficeManagementAPI.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@ID", id);
+                    myCommand.Parameters.AddWithValue("@ID", emp.ID);
                     myCommand.Parameters.AddWithValue("@FirstName", emp.FirstName);
                     myCommand.Parameters.AddWithValue("@LastName", emp.LastName);
                     myCommand.Parameters.AddWithValue("@Email", emp.Email);
@@ -170,6 +170,7 @@ namespace OfficeManagementAPI.Controllers
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
                     myCommand.Parameters.AddWithValue("@ID", emp.ID);
+                   
                     if (status == "inactive")
                         myCommand.Parameters.AddWithValue("@EmpStatus", "inactive");
                     else if (status == "active")
