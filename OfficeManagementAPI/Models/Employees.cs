@@ -6,6 +6,7 @@ using System.Data;
 
 namespace OfficeManagementAPI.Models
 {
+   
     public class Employees
     {
         public int ID { get; set; }
@@ -23,5 +24,8 @@ namespace OfficeManagementAPI.Models
         public int FloorNo { get; set; }
         public string BuildingName { get; set; }
         public string WorkRemote { get; set; }
+       
+        public string Token { get; set; }
     }
+    
 }

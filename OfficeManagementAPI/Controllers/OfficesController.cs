@@ -69,7 +69,7 @@ namespace OfficeManagementAPI.Controllers
                     myCommand.Parameters.AddWithValue("@OfficeAdminName", office.OfficeAdminName);
                     myCommand.Parameters.AddWithValue("@TotalDesksCount", office.TotalDesksCount);
                     myCommand.Parameters.AddWithValue("@UsableDesksCount", office.UsableDesksCount);
-                    myCommand.Parameters.AddWithValue("@OccupiedDesksCount", office.OccupiedDeskCount);
+                    myCommand.Parameters.AddWithValue("@OccupiedDesksCount", office.OccupiedDesksCount);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -101,14 +101,14 @@ namespace OfficeManagementAPI.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    //myCommand.Parameters.AddWithValue("@OfficeID", office.OfficeID);
+                    myCommand.Parameters.AddWithValue("@OfficeID", office.OfficeID);
                     myCommand.Parameters.AddWithValue("@OfficeName", office.OfficeName);
                     myCommand.Parameters.AddWithValue("@BuildingName", office.BuildingName);
                     myCommand.Parameters.AddWithValue("@FloorNo", office.FloorNo);
                     myCommand.Parameters.AddWithValue("@OfficeAdminName", office.OfficeAdminName);
                     myCommand.Parameters.AddWithValue("@TotalDesksCount", office.TotalDesksCount);
                     myCommand.Parameters.AddWithValue("@UsableDesksCount", office.UsableDesksCount);
-                    myCommand.Parameters.AddWithValue("@OccupiedDesksCount", office.OccupiedDeskCount);
+                    myCommand.Parameters.AddWithValue("@OccupiedDesksCount", office.OccupiedDesksCount);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();

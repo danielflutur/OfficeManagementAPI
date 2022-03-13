@@ -14,6 +14,6 @@ namespace OfficeManagementAPI.Models
         public string OfficeAdminName { get; set; }
         public int TotalDesksCount { get; set; }
         public int UsableDesksCount { get; set; }
-        public string OccupiedDeskCount { get; set; }
+        public string OccupiedDesksCount { get; set; }
     }
 }

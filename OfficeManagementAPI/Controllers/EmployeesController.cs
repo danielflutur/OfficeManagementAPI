@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
 using OfficeManagementAPI.Models;
+using System.Reflection;
 
 namespace OfficeManagementAPI.Controllers
 {
@@ -21,7 +22,7 @@ namespace OfficeManagementAPI.Controllers
         {
             _configuration = configuration;
         }
-
+        
         [HttpGet]
         public JsonResult Get()
         {
@@ -43,7 +44,9 @@ namespace OfficeManagementAPI.Controllers
                     myCon.Close();
                 }
             }
+            //if (table != null)
             return new JsonResult(table);
+            //else return new JsonResult("failed");
         }
         [HttpPost]
         public JsonResult Post(Employees emp)
@@ -153,8 +156,8 @@ namespace OfficeManagementAPI.Controllers
             return new JsonResult("Deleted successfuly");
         }
 
-        [HttpPut ("{status}")]
-        public JsonResult PutStatus(string status, Employees emp)
+        [HttpPut ("{status},{id}")]
+        public JsonResult PutStatus(string status, int id)
         {
             string query = @"
                             update dbo.Employees 
@@ -169,7 +172,7 @@ namespace OfficeManagementAPI.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@ID", emp.ID);
+                    myCommand.Parameters.AddWithValue("@ID", id);
                    
                     if (status == "inactive")
                         myCommand.Parameters.AddWithValue("@EmpStatus", "inactive");
