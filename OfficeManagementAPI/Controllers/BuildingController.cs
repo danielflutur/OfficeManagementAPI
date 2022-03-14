@@ -8,9 +8,11 @@ using System.Data.SqlClient;
 using System.Data;
 using OfficeManagementAPI.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OfficeManagementAPI.Controllers
 {
+    [Authorize(Roles = Role.Administrator)]
     [Route("api/[controller]")]
     [ApiController]
     public class BuildingController : ControllerBase

@@ -9,9 +9,11 @@ using System.Data.SqlClient;
 using System.Data;
 using OfficeManagementAPI.Models;
 using System.Reflection;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OfficeManagementAPI.Controllers
 {
+    [Authorize(Roles = Role.Administrator)]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeesController : ControllerBase
@@ -22,13 +24,13 @@ namespace OfficeManagementAPI.Controllers
         {
             _configuration = configuration;
         }
-        
+        [AllowAnonymous]
         [HttpGet]
         public JsonResult Get()
         {
             string query = @"
                             select ID,FirstName,LastName,Email,Passw,EmpRole,Gender,BirthDate,Nationality,
-                            EmpStatus,DeskNo,OfficeName,FloorNo,BuildingName,WorkRemote from dbo.Employees
+                            EmpStatus,DeskNo,OfficeName,FloorNo,BuildingName,WorkRemote, Token from dbo.Employees
                             ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
@@ -45,16 +47,18 @@ namespace OfficeManagementAPI.Controllers
                 }
             }
             //if (table != null)
+            //Console.WriteLine(table);
             return new JsonResult(table);
             //else return new JsonResult("failed");
         }
+        [AllowAnonymous]
         [HttpPost]
         public JsonResult Post(Employees emp)
         {
             string query = @"
                             insert into dbo.Employees values(
                             @FirstName,@LastName,@Email,@Passw,@EmpRole,@Gender,@BirthDate,@Nationality,
-                            @EmpStatus,@DeskNo,@OfficeName,@FloorNo,@BuildingName,@WorkRemote
+                            @EmpStatus,@DeskNo,@OfficeName,@FloorNo,@BuildingName,@WorkRemote, @Token
                             )
                             ";
             DataTable table = new DataTable();
@@ -79,6 +83,7 @@ namespace OfficeManagementAPI.Controllers
                     myCommand.Parameters.AddWithValue("@FloorNo", emp.FloorNo);
                     myCommand.Parameters.AddWithValue("@BuildingName", emp.BuildingName);
                     myCommand.Parameters.AddWithValue("@WorkRemote", emp.WorkRemote);
+                    myCommand.Parameters.AddWithValue("@Token", emp.Token);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -87,6 +92,7 @@ namespace OfficeManagementAPI.Controllers
             }
             return new JsonResult("Added succesfuly");
         }
+        [AllowAnonymous]
         [HttpPut]
         public JsonResult Put(Employees emp)
         {
@@ -98,7 +104,8 @@ namespace OfficeManagementAPI.Controllers
                             BirthDate = @BirthDate, Nationality = @Nationality,
                             EmpStatus = @EmpStatus, DeskNo = @DeskNo,
                             OfficeName = @OfficeName, FloorNo = @FloorNo,
-                            BuildingName = @BuildingName, WorkRemote = @WorkRemote where ID = @ID
+                            BuildingName = @BuildingName, WorkRemote = @WorkRemote
+                            where ID = @ID
                             
                             ";
             DataTable table = new DataTable();
@@ -124,6 +131,7 @@ namespace OfficeManagementAPI.Controllers
                     myCommand.Parameters.AddWithValue("@FloorNo", emp.FloorNo);
                     myCommand.Parameters.AddWithValue("@BuildingName", emp.BuildingName);
                     myCommand.Parameters.AddWithValue("@WorkRemote", emp.WorkRemote);
+                    //myCommand.Parameters.AddWithValue("@Token", emp.Token);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
@@ -132,6 +140,7 @@ namespace OfficeManagementAPI.Controllers
             }
             return new JsonResult("Updated successfuly");
         }
+        [AllowAnonymous]
         [HttpDelete ("{id}")]
         public JsonResult Delete(int id)
         {

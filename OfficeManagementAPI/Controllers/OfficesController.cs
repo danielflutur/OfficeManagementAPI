@@ -140,5 +140,31 @@ namespace OfficeManagementAPI.Controllers
             }
             return new JsonResult("Deleted succesfuly");
         }
+
+        [HttpGet("{officeName}")]
+        public JsonResult GetOfficeEmployees(string officeName)
+        {
+            string query = @"
+                        select FirstName, LastName, DeskNo 
+                        from dbo.Employees
+                        where OfficeName = @OfficeName
+                        ";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@OfficeName", officeName);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult(table);
+        }
     }
 }
