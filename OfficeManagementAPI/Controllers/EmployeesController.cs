@@ -24,7 +24,7 @@ namespace OfficeManagementAPI.Controllers
         {
             _configuration = configuration;
         }
-        [AllowAnonymous]
+        
         [HttpGet]
         public JsonResult Get()
         {
@@ -51,7 +51,7 @@ namespace OfficeManagementAPI.Controllers
             return new JsonResult(table);
             //else return new JsonResult("failed");
         }
-        [AllowAnonymous]
+        
         [HttpPost]
         public JsonResult Post(Employees emp)
         {
@@ -92,7 +92,7 @@ namespace OfficeManagementAPI.Controllers
             }
             return new JsonResult("Added succesfuly");
         }
-        [AllowAnonymous]
+       
         [HttpPut]
         public JsonResult Put(Employees emp)
         {
@@ -140,7 +140,7 @@ namespace OfficeManagementAPI.Controllers
             }
             return new JsonResult("Updated successfuly");
         }
-        [AllowAnonymous]
+        
         [HttpDelete ("{id}")]
         public JsonResult Delete(int id)
         {
