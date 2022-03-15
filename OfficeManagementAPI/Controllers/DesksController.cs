@@ -80,10 +80,10 @@ namespace OfficeManagementAPI.Controllers
         {
             string query = @"
                         update dbo.Desks
-                        set EmployeeName = @EmployeeName
+                        set EmployeeName = @EmployeeName,
                         DeskNo = @DeskNo,
                         OfficeName = @OfficeName,
-                        OfficeAdmin = @OfficeAdmin
+                        OfficeAdmin = @OfficeAdmin,
                         BuildingName = @BuildingName
                         where DeskID = @DeskID
                         ";
