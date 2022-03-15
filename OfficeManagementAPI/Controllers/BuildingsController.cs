@@ -28,7 +28,7 @@ namespace OfficeManagementAPI.Controllers
         public JsonResult Get()
         {
             string query = @"
-                            select BuildingName, FloorsNo, BuildingAddress from dbo.Buildings
+                            select BuildingID, BuildingName, FloorsNo, BuildingAddress from dbo.Buildings
                             ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
@@ -78,9 +78,9 @@ namespace OfficeManagementAPI.Controllers
         public JsonResult Put(Buildings bld)
         {
             string query = @"
-                            update dbo.Building
+                            update dbo.Buildings
                             set
-                            BuildingName = @BuildingName
+                            BuildingName = @BuildingName,
                             FloorsNo = @FloorsNo,
                             BuildingAddress = @BuildingAddress 
                             where BuildingID = @BuildingID
@@ -109,7 +109,7 @@ namespace OfficeManagementAPI.Controllers
         public JsonResult Delete(int id)
         {
             string query = @"
-                            delete from dbo.Building where BuildingID = @BuildingID
+                            delete from dbo.Buildings where BuildingID = @BuildingID
                             ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
