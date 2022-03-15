@@ -90,10 +90,38 @@ namespace OfficeManagementAPI.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
+                    myCommand.Parameters.AddWithValue("@RequestNo", req.RequestNo);
                     myCommand.Parameters.AddWithValue("@EmployeeName", req.EmployeeName);
                     myCommand.Parameters.AddWithValue("@RemotePercent", req.RemotePercent);
                     myCommand.Parameters.AddWithValue("@RequestMsg", req.RequestMsg);
                     myCommand.Parameters.AddWithValue("@ReqStatus", req.ReqStatus);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
+            return new JsonResult("Updated succesfuly");
+        }
+        [HttpPut ("{status},{id}")]
+        public JsonResult PutStatus(string status, int id)
+        {
+            string query = @"
+                            update dbo.Requests
+                            set
+                            ReqStatus = @ReqStatus
+                            where RequestNo = @RequestNo
+                            ";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@RequestNo", id);
+                    myCommand.Parameters.AddWithValue("@ReqStatus", status);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
