@@ -15,11 +15,11 @@ namespace OfficeManagementAPI.Controllers
     [Authorize(Roles = Role.Administrator)]
     [Route("api/[controller]")]
     [ApiController]
-    public class BuildingController : ControllerBase
+    public class BuildingsController : ControllerBase
     {
         private readonly IConfiguration _configuration;
 
-        public BuildingController(IConfiguration configuration)
+        public BuildingsController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -28,7 +28,7 @@ namespace OfficeManagementAPI.Controllers
         public JsonResult Get()
         {
             string query = @"
-                            select BuildingName, NumberOfFloors, BuildingAddress from dbo.Building
+                            select BuildingName, FloorsNo, BuildingAddress from dbo.Buildings
                             ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
@@ -47,11 +47,11 @@ namespace OfficeManagementAPI.Controllers
             return new JsonResult(table);
         }
         [HttpPost]
-        public JsonResult Post(Building bld)
+        public JsonResult Post(Buildings bld)
         {
             string query = @"
-                            insert into dbo.Building values(
-                            @BuildingName, @NumberOfFloors, @BuildingAddress
+                            insert into dbo.Buildings values(
+                            @BuildingName, @FloorsNo, @BuildingAddress
                             )
                             ";
             DataTable table = new DataTable();
@@ -62,8 +62,9 @@ namespace OfficeManagementAPI.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
+                    
                     myCommand.Parameters.AddWithValue("@BuildingName", bld.BuildingName);
-                    myCommand.Parameters.AddWithValue("@NumberOfFloors", bld.NumberOfFloors);
+                    myCommand.Parameters.AddWithValue("@FloorsNo", bld.FloorsNo);
                     myCommand.Parameters.AddWithValue("@BuildingAddress", bld.BuildingAddress);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
@@ -74,14 +75,15 @@ namespace OfficeManagementAPI.Controllers
             return new JsonResult("Added succesfuly");
         }
         [HttpPut]
-        public JsonResult Put(Building bld)
+        public JsonResult Put(Buildings bld)
         {
             string query = @"
                             update dbo.Building
                             set
-                            NumberOfFloors = @NumberOfFloors,
+                            BuildingName = @BuildingName
+                            FloorsNo = @FloorsNo,
                             BuildingAddress = @BuildingAddress 
-                            where BuildingName = @BuildingName
+                            where BuildingID = @BuildingID
                             ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
@@ -91,8 +93,9 @@ namespace OfficeManagementAPI.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
+                    myCommand.Parameters.AddWithValue("@BuildingID", bld.BuildingID);
                     myCommand.Parameters.AddWithValue("@BuildingName", bld.BuildingName);
-                    myCommand.Parameters.AddWithValue("@NumberOfFloors", bld.NumberOfFloors);
+                    myCommand.Parameters.AddWithValue("@FloorsNo", bld.FloorsNo);
                     myCommand.Parameters.AddWithValue("@BuildingAddress", bld.BuildingAddress);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
@@ -102,11 +105,11 @@ namespace OfficeManagementAPI.Controllers
             }
             return new JsonResult("Updated succesfuly");
         }
-        [HttpDelete("{name}")]
-        public JsonResult Delete(string name)
+        [HttpDelete("{id}")]
+        public JsonResult Delete(int id)
         {
             string query = @"
-                            delete from dbo.Building where BuildingName = @BuildingName
+                            delete from dbo.Building where BuildingID = @BuildingID
                             ";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
@@ -116,7 +119,7 @@ namespace OfficeManagementAPI.Controllers
                 myCon.Open();
                 using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
-                    myCommand.Parameters.AddWithValue("@BuildingName", name);
+                    myCommand.Parameters.AddWithValue("@BuildingID", id);
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
