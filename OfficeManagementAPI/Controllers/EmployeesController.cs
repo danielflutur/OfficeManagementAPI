@@ -87,14 +87,15 @@ namespace OfficeManagementAPI.Controllers
                             insert into dbo.Employees values(
                             @FirstName,@LastName,@Email,@Passw,@EmpRole,@Gender,@BirthDate,@Nationality,
                             @EmpStatus,@DeskNo,@OfficeName,@FloorNo,@BuildingName,@WorkRemote, @Token
-                            )";
-            //string deskQuery = @"
-            //                    insert into Desks
-            //                    values( (@FirstName + ' ' + @LastName'), 
-            //                    @DeskNo, @OfficeName, 
-            //                    (select @FirstName + ' ' + @LastName 
-            //                    from Employees where (EmpRole = 'OfficeAdministrator' AND OfficeName = @OfficeName)),
-            //                    @BuildingName)";
+                            )
+                            ";
+            string deskQuery = @"
+                                insert into Desks
+                                values( (@FirstName + ' ' + @LastName), 
+                                @DeskNo, @OfficeName, 
+                                (select FirstName + ' ' + LastName 
+                                from Employees where EmpRole = 'OfficeAdministrator' AND OfficeName = @OfficeName),
+                                @BuildingName)";
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
             SqlDataReader myReader;
@@ -125,23 +126,26 @@ namespace OfficeManagementAPI.Controllers
                 }
 
             }
-            //using (SqlConnection myCon = new SqlConnection(sqlDataSource))
-            //{
-            //    myCon.Open();
-            //    using (SqlCommand myCommand = new SqlCommand(deskQuery, myCon))
-            //    {
-            //        myCommand.Parameters.AddWithValue("@FirstName", emp.FirstName);
-            //        myCommand.Parameters.AddWithValue("@LastName", emp.LastName);
-            //        myCommand.Parameters.AddWithValue("@DeskNo", emp.DeskNo);
-            //        myCommand.Parameters.AddWithValue("@OfficeName", emp.OfficeName);
-            //        myCommand.Parameters.AddWithValue("@BuildingName", emp.BuildingName);
-            //        myReader = myCommand.ExecuteReader();
-            //        table.Load(myReader);
-            //        myReader.Close();
-            //        myCon.Close();
-            //    }
+            table = new DataTable();
+            sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
+            SqlDataReader myReader2;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(deskQuery, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@FirstName", emp.FirstName);
+                    myCommand.Parameters.AddWithValue("@LastName", emp.LastName);
+                    myCommand.Parameters.AddWithValue("@DeskNo", emp.DeskNo);
+                    myCommand.Parameters.AddWithValue("@OfficeName", emp.OfficeName);
+                    myCommand.Parameters.AddWithValue("@BuildingName", emp.BuildingName);
+                    myReader2 = myCommand.ExecuteReader();
+                    table.Load(myReader2);
+                    myReader.Close();
+                    myCon.Close();
+                }
 
-            //}
+            }
             return new JsonResult("Added succesfuly");
         }
        
