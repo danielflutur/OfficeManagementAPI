@@ -134,9 +134,35 @@ namespace OfficeManagementAPI.Services
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-
+            
+            
+            //return new JsonResult("Updated successfuly");
+            
             //INCEARCA SA FACI UN PUT CU TOKEN_UL CA SA SE SCHIMBE SI IN BAZA DE DATE
             user.Token = tokenHandler.WriteToken(token);
+
+            string query = @"
+                        update dbo.Employees 
+                        set Token = @Token
+                        where ID = @ID
+                            
+                        ";
+            DataTable table = new DataTable();
+            string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
+            SqlDataReader myReader;
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            {
+                myCon.Open();
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                {
+                    myCommand.Parameters.AddWithValue("@ID", user.ID);
+                    myCommand.Parameters.AddWithValue("@Token", user.Token);
+                    myReader = myCommand.ExecuteReader();
+                    table.Load(myReader);
+                    myReader.Close();
+                    myCon.Close();
+                }
+            }
 
             return user.WithoutPassword();
         }
