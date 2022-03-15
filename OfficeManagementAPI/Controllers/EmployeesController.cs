@@ -52,7 +52,7 @@ namespace OfficeManagementAPI.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-            string role = ;
+            //string role = ;
             string query1 = @"
                             select ID,FirstName,LastName,DeskNo,OfficeName,BuildingName,WorkRemote from dbo.Employees
                             ";
