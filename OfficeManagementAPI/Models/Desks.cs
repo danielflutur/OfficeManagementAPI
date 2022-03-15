@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 
 namespace OfficeManagementAPI.Models
 {
-    public class Desk
+    public class Desks
     {
         public int DeskID { get; set; }
-        public int DeskNr { get; set; }
-        public string DeskStatus { get; set; }
+        public string EmployeeName { get; set; }
+        public int DeskNo { get; set; }
         public string OfficeName { get; set; }
-        public int EmployeeID { get; set; }
+        public string OfficeAdmin { get; set; }
+        public string BuildingName { get; set; }
     }
 }

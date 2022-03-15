@@ -24,10 +24,38 @@ namespace OfficeManagementAPI.Controllers
         {
             _configuration = configuration;
         }
-        
+
+        //[AllowAnonymous]
+        //[HttpGet("{role}")]
+        //public JsonResult GetForAll(string role)
+        //{
+        //    string query = @"
+        //                    select ID,FirstName,LastName,DeskNo,OfficeName,BuildingName,WorkRemote from dbo.Employees
+        //                    ";
+        //    DataTable table = new DataTable();
+        //    string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
+        //    SqlDataReader myReader;
+        //    using(SqlConnection myCon = new SqlConnection(sqlDataSource))
+        //    {
+        //        myCon.Open();
+        //        using(SqlCommand myCommand = new SqlCommand(query, myCon))
+        //        {
+        //            myReader = myCommand.ExecuteReader();
+        //            table.Load(myReader);
+        //            myReader.Close();
+        //            myCon.Close();
+        //        }
+        //    }
+        //    return new JsonResult(table);
+            
+        //}
         [HttpGet]
         public JsonResult Get()
         {
+            string role = ;
+            string query1 = @"
+                            select ID,FirstName,LastName,DeskNo,OfficeName,BuildingName,WorkRemote from dbo.Employees
+                            ";
             string query = @"
                             select ID,FirstName,LastName,Email,Passw,EmpRole,Gender,BirthDate,Nationality,
                             EmpStatus,DeskNo,OfficeName,FloorNo,BuildingName,WorkRemote, Token from dbo.Employees
@@ -35,10 +63,10 @@ namespace OfficeManagementAPI.Controllers
             DataTable table = new DataTable();
             string sqlDataSource = _configuration.GetConnectionString("CompanyAppCon");
             SqlDataReader myReader;
-            using(SqlConnection myCon = new SqlConnection(sqlDataSource))
+            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
             {
                 myCon.Open();
-                using(SqlCommand myCommand = new SqlCommand(query, myCon))
+                using (SqlCommand myCommand = new SqlCommand(query, myCon))
                 {
                     myReader = myCommand.ExecuteReader();
                     table.Load(myReader);
@@ -51,7 +79,7 @@ namespace OfficeManagementAPI.Controllers
             return new JsonResult(table);
             //else return new JsonResult("failed");
         }
-        
+
         [HttpPost]
         public JsonResult Post(Employees emp)
         {
